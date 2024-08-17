@@ -104,7 +104,7 @@ Over on the UDMP, settings -> profiles -> RADIUS -> create new.
 
 MAKE SURE APs ARE SET TO STATIC
 
-Enable for wireless networks, add the IP address of the NPS server, leave the port, and paste in the secret and save
+Enable for wireless networks, add the IP address of the NPS server, leave the port at 1812 and 1813, and paste in the secret and save
 
 TODO ADD EAPTLS3 PIC
 
