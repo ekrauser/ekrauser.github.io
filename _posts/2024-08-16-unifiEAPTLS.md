@@ -34,7 +34,7 @@ Starting on the cert server:
 5. In crypto I'm bumping up the key size to 4096
 6. In subject name, build from AD, common name + DNS name
 7. Security RAS and IAS servers get read, enroll and auto enroll
-7. Leaving everything else at the default, then OK
+8. Leaving everything else at the default, then OK
 
 Now back to certsrv.msc, right click certificate templates again -> new -> certificate template to issue and select the new certificate template (SkynetWifi-NPS in my case)
 
