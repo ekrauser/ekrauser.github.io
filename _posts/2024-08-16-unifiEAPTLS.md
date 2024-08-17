@@ -1,3 +1,10 @@
+---
+title: EAP-TLS with On-Prem AD and Unifi APs
+date: 2024-08-16 23:00:00 -500
+categories: [homelab, infrastructure, unifi]
+tags: [homelab, wifi, unifi, infrastructure]     # TAG names should always be lowercase
+---
+
 # EAP-TLS with On-Prem AD and Unifi APs
 
 Full disclosure, this isn't going to be a tutorial. This relies on a lot of prexisting infrastructure that I will not be diving into here. This assumes you already have a fully configured and deployed enviroment consisting of at least:
