@@ -3,19 +3,18 @@ title: EAP-TLS with On-Prem AD and Unifi APs
 date: 2024-08-16 23:00:00 -500
 categories: [homelab, infrastructure, unifi]
 tags: [homelab, wifi, unifi, infrastructure]     # TAG names should always be lowercase
+description: Wiring up WPA2-Enterprise with on-prem AD CS certificates, NPS RADIUS, and UniFi APs — certificate templates, RADIUS clients via PowerShell, and the wall I hit at the end.
 ---
 
-# EAP-TLS with On-Prem AD and Unifi APs
-
-Full disclosure, this isn't going to be a tutorial. This relies on a lot of prexisting infrastructure that I will not be diving into here. This assumes you already have a fully configured and deployed enviroment consisting of at least:
+Full disclosure, this isn't going to be a tutorial. This relies on a lot of preexisting infrastructure that I will not be diving into here. This assumes you already have a fully configured and deployed environment consisting of at least:
 
 - At least one domain controller with Active directory domain services
 - At least one windows machine running active directory certificate services (as the enterprise root)
 - At least one windows machine running network policy server for radius (you could use FreeRadius or anything else, but I already have it and like the seamless integration)
 
-All of these roles can be deployed to the same machine, and technically you only need a single instace of windows server (physical or virtual) to run that **however** I would strongly advise against doing this. 
+All of these roles can be deployed to the same machine, and technically you only need a single instance of windows server (physical or virtual) to run that **however** I would strongly advise against doing this. 
 
-The relevant parts of my enviroment at home consists of the following:
+The relevant parts of my environment at home consist of the following:
 
 - 3 windows server 19' VMs (one core) running ADDS and DNS. Domain controllers A and B also run NPS
 - 2 windows server 16' VMs running ADCS, one configured as an offline root, the other as an online enterprise subordinate (the subordinate also has most of the role services, the root only has CA)
@@ -29,7 +28,7 @@ Starting on the cert server:
 
 1. Open up certsrv.msc go right click on certificate templates and click manage
 2. Now in the Certificate templates console, right click on RAS and IAS server and click duplicate template
-3. I only support win 10/svr16 and newer clients, so I'm selecting that in the compatabilty tab
+3. I only support win 10/svr16 and newer clients, so I'm selecting that in the compatibility tab
 4. In general give the template a name, I did "SkynetWiFi-NPS" to keep it on brand
 5. In crypto I'm bumping up the key size to 4096
 6. In subject name, build from AD, common name + DNS name
@@ -40,7 +39,7 @@ Now back to certsrv.msc, right click certificate templates again -> new -> certi
 
 Run a gpupdate and you should have the cert we're looking for errrrr nope, request it manually because it'll leave the subject field blank and freak out the unifi crap. It should auto renew with the same info though (hopefully).
 
-Now lets open up NPS, create shared secrete template first (**NOTE the UDMP will only take a 48 char max secret, you'll have to chop it down from the generated one**)
+Now lets open up NPS, create the shared secret template first (**NOTE the UDMP will only take a 48 char max secret, you'll have to chop it down from the generated one**)
 
 We're gonna use powershell to add the APs and the UDMP as RADIUS clients because aint no one got time for that.
 
@@ -108,7 +107,7 @@ Enable for wireless networks, add the IP address of the NPS server, leave the po
 
 TODO ADD EAPTLS3 PIC
 
-Now go over to WiFi -> Create new -> name it (SkyFi-Ent in my case), pick your network (trusted-LAN), select manual and scroll down to security protocol, select WPA2 enterprise and select the new RADIUS profile we just created. Leave everything else at detault for now and click Add Wifi Network.
+Now go over to WiFi -> Create new -> name it (SkyFi-Ent in my case), pick your network (trusted-LAN), select manual and scroll down to security protocol, select WPA2 enterprise and select the new RADIUS profile we just created. Leave everything else at default for now and click Add Wifi Network.
 
 Do all that then get this error on the NPS server Negotiation failed. Requested EAP methods not available because this unifi shit is a toy. 
 
