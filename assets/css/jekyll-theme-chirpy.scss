@@ -1,0 +1,64 @@
+---
+# Custom stylesheet entrypoint. This file overrides the theme's compiled CSS,
+# so it must @use "main" to pull in the full Chirpy base before adding overrides.
+---
+
+@use "main";
+
+// ---------------------------------------------------------------------------
+// Amber / terminal accent
+// Re-tints Chirpy's default blue accent to amber across links, active nav,
+// the TOC, tags, inline code, and the site title, in both colour schemes.
+// Scoping mirrors Chirpy's own theme application:
+//   :root[data-mode='light|dark']  -> explicit toggle
+//   :root:not([data-mode])         -> follow the OS via prefers-color-scheme
+// ---------------------------------------------------------------------------
+
+@mixin amber-light {
+  --link-color: #b45309;
+  --link-underline-color: rgba(180, 83, 9, 0.35);
+  --toc-highlight: #b45309;
+  --btn-share-hover-color: #b45309;
+  --checkbox-checked-color: #d97706;
+  --site-title-color: #b45309;
+  --sidebar-active-color: #b45309;
+  --sidebar-hover-bg: rgba(180, 83, 9, 0.1);
+  --categories-icon-hover-color: #b45309;
+  --tag-hover: rgba(180, 83, 9, 0.12);
+  --tag-border: #e6c9a3;
+  --highlighter-rouge-color: #9a3412;
+  --inline-code-bg: rgba(180, 83, 9, 0.08);
+}
+
+@mixin amber-dark {
+  --link-color: #f59e0b;
+  --link-underline-color: rgba(245, 158, 11, 0.45);
+  --toc-highlight: #f59e0b;
+  --btn-share-hover-color: #fbbf24;
+  --site-title-color: #f59e0b;
+  --sidebar-active-color: #f59e0b;
+  --sidebar-hover-bg: rgba(245, 158, 11, 0.1);
+  --categories-icon-hover-color: #fbbf24;
+  --tag-hover: rgba(245, 158, 11, 0.16);
+  --tag-border: rgba(245, 158, 11, 0.35);
+  --highlighter-rouge-color: #fbbf24;
+  --inline-code-bg: rgba(245, 158, 11, 0.12);
+}
+
+:root[data-mode='light'] {
+  @include amber-light;
+}
+
+:root[data-mode='dark'] {
+  @include amber-dark;
+}
+
+:root:not([data-mode]) {
+  @media (prefers-color-scheme: light) {
+    @include amber-light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    @include amber-dark;
+  }
+}

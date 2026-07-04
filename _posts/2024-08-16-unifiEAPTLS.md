@@ -93,19 +93,13 @@ auditpol /set /subcategory:"Network Policy Server" /success:enable /failure:enab
 
 Still in NPS right click connection request policies under policies and click new. Name it and leave it unspecified, add a new condition of NAS port type and add wireless - ieee 802.11 and wireless - other. Leave request forwarding at defaults, next. Check override network policy auth settings, click add, add PEAP and click edit and make sure the selected cert is that new NPS cert (you can tell by the exp date), click ok. Now add MS-CHAP-v2 to the list, and check the boxes for MS-CHAP and v2, and the user can change password boxes. Next, next and finish.
 
-TODO add EAPTLS6 PIC
-
 Now we need a new network policy, right click on network policies and click new. Give it a name, and leave it unspecified. For conditions, we're going to add the same two NAS Port entries for wireless, and we're also going to add that user group we created "WifiUsers" next, access granted, next. Add PEAP and MS-CHAP-v2 to the list again, make sure PEAP has the right cert same as before, leave everything else default. Next, next, next, finish. 
-
-TODO ADD EAPTLS7 PIC
 
 Over on the UDMP, settings -> profiles -> RADIUS -> create new.  
 
 MAKE SURE APs ARE SET TO STATIC
 
 Enable for wireless networks, add the IP address of the NPS server, leave the port at 1812 and 1813, and paste in the secret and save
-
-TODO ADD EAPTLS3 PIC
 
 Now go over to WiFi -> Create new -> name it (SkyFi-Ent in my case), pick your network (trusted-LAN), select manual and scroll down to security protocol, select WPA2 enterprise and select the new RADIUS profile we just created. Leave everything else at default for now and click Add Wifi Network.
 
