@@ -1,9 +1,9 @@
 ---
 ---
 
-/* Replicates Chirpy 7.x's own stylesheet entry (must match the gem so the full
-   theme CSS is emitted), then appends the amber overrides below.
-   In production the theme uses `main.bundle`; in development, `main`. */
+/* Replicates Chirpy's own stylesheet entry (must match the gem so the full
+   theme CSS is emitted), then layers the amber-phosphor theme on top.
+   Production uses `main.bundle`; development uses `main`. */
 
 @use 'abstracts/variables' with (
   $theme: '{{ site.theme_mode }}'
@@ -16,61 +16,338 @@
 {%- endif -%}
 ';
 
-/* ---------------------------------------------------------------------------
-   Amber / terminal accent
-   Re-tints Chirpy's default blue accent to amber across links, active nav,
-   the TOC, tags, inline code, and the site title, in both colour schemes.
-   Scoping mirrors Chirpy's own theme application:
-     :root[data-mode='light|dark']  -> explicit toggle
-     :root:not([data-mode])         -> follow the OS via prefers-color-scheme
-   Palette: light #b45309 (accent) / #9a3412 (inline code); dark #f59e0b / #fbbf24.
-   --------------------------------------------------------------------------- */
+/* ===========================================================================
+   Amber phosphor / vintage terminal
+   Ported from resume.aws.krauser.tech (src/styles/themes.css + globals.css).
+   Palette: bg #0d0b07 · surface #161108 · border #332611 · text #ede0c4 ·
+            accent #ffb000. Fonts: Inter (body) + JetBrains Mono (terminal).
+   =========================================================================== */
 
-@mixin amber-light {
-  --link-color: #b45309;
-  --link-underline-color: rgba(180, 83, 9, 0.35);
-  --toc-highlight: #b45309;
-  --btn-share-hover-color: #b45309;
-  --checkbox-checked-color: #d97706;
-  --site-title-color: #b45309;
-  --sidebar-active-color: #b45309;
-  --sidebar-hover-bg: rgba(180, 83, 9, 0.1);
-  --categories-icon-hover-color: #b45309;
-  --tag-hover: rgba(180, 83, 9, 0.12);
-  --tag-border: #e6c9a3;
-  --highlighter-rouge-color: #9a3412;
-  --inline-code-bg: rgba(180, 83, 9, 0.08);
-}
+$mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'Cascadia Code', Menlo,
+  Consolas, monospace;
+$sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+/* ── Colour schemes ───────────────────────────────────────────────────────
+   Dark = faithful phosphor. Light = warm amber-on-parchment variant. */
 
 @mixin amber-dark {
-  --link-color: #f59e0b;
-  --link-underline-color: rgba(245, 158, 11, 0.45);
-  --toc-highlight: #f59e0b;
-  --btn-share-hover-color: #fbbf24;
-  --site-title-color: #f59e0b;
-  --sidebar-active-color: #f59e0b;
-  --sidebar-hover-bg: rgba(245, 158, 11, 0.1);
-  --categories-icon-hover-color: #fbbf24;
-  --tag-hover: rgba(245, 158, 11, 0.16);
-  --tag-border: rgba(245, 158, 11, 0.35);
-  --highlighter-rouge-color: #fbbf24;
-  --inline-code-bg: rgba(245, 158, 11, 0.12);
+  --bg: #0d0b07;
+  --surface: #161108;
+  --surface-2: #1e170b;
+  --amber: #ffb000;
+  --amber-hover: #ffc74d;
+  --amber-dim: rgba(255, 176, 0, 0.1);
+  --amber-border: rgba(255, 176, 0, 0.25);
+
+  --main-bg: #0d0b07;
+  --body-bg: #0d0b07;
+  --mask-bg: #100c07;
+  --main-border-color: #2a2011;
+  --text-color: #ede0c4;
+  --text-muted-color: #9a8060;
+  --text-muted-highlight-color: #c9b48a;
+  --heading-color: #f3e3bf;
+  --blockquote-border-color: rgba(255, 176, 0, 0.4);
+  --blockquote-text-color: #9a8060;
+  --link-color: #ffb000;
+  --link-underline-color: rgba(255, 176, 0, 0.35);
+  --button-bg: #161108;
+  --btn-border-color: #2a2011;
+  --btn-backtotop-color: #9a8060;
+  --btn-backtotop-border-color: #2a2011;
+  --card-header-bg: #1e170b;
+  --checkbox-color: #5a4a34;
+  --checkbox-checked-color: #ffb000;
+
+  --site-title-color: #ffb000;
+  --site-subtitle-color: #9a8060;
+  --sidebar-bg: #0a0805;
+  --sidebar-border-color: #211910;
+  --sidebar-muted-color: #9a8060;
+  --sidebar-active-color: #ffb000;
+  --sidebar-hover-bg: rgba(255, 176, 0, 0.09);
+  --sidebar-btn-bg: #161108;
+  --sidebar-btn-color: #9a8060;
+  --avatar-border-color: rgba(255, 176, 0, 0.35);
+
+  --topbar-bg: rgba(13, 11, 7, 0.7);
+  --topbar-text-color: #ede0c4;
+  --search-border-color: #2a2011;
+  --search-icon-color: #5a4a34;
+  --input-focus-border-color: #ffb000;
+
+  --post-list-text-color: #9a8060;
+  --btn-patinator-text-color: #9a8060;
+  --btn-paginator-hover-color: #1e170b;
+  --toc-highlight: #ffb000;
+  --toc-popup-border-color: #2a2011;
+  --btn-share-color: #9a8060;
+  --btn-share-hover-color: #ffb000;
+  --card-bg: #161108;
+  --card-hover-bg: #1e170b;
+  --card-shadow: rgb(0 0 0 / 60%) 0 6px 18px 0, rgb(51 38 17 / 40%) 0 0 0 1px;
+
+  --tb-odd-bg: #161108;
+  --tb-even-bg: #120d07;
+  --tb-border-color: #2a2011;
+  --dash-color: #332611;
+  --kbd-wrap-color: #9a8060;
+  --kbd-text-color: #ede0c4;
+  --kbd-bg-color: #1e170b;
+
+  --prompt-text-color: rgb(237 224 196 / 80%);
+  --prompt-tip-bg: rgb(46 60 22 / 55%);
+  --prompt-tip-icon-color: #7bbf16;
+  --prompt-info-bg: rgb(59 44 7 / 60%);
+  --prompt-info-icon-color: #ffb000;
+  --prompt-warning-bg: rgb(90 60 3 / 55%);
+  --prompt-warning-icon-color: #ffb000;
+  --prompt-danger-bg: rgb(86 28 8 / 55%);
+  --prompt-danger-icon-color: #e05a3c;
+
+  --tag-border: rgba(255, 176, 0, 0.25);
+  --tag-shadow: #211910;
+  --tag-hover: rgba(255, 176, 0, 0.16);
+  --search-tag-bg: #1e170b;
+  --categories-border: #2a2011;
+  --categories-hover-bg: rgba(255, 176, 0, 0.1);
+  --categories-icon-hover-color: #ffb000;
+  --timeline-color: #2a2011;
+  --timeline-node-bg: #5a4a34;
+  --timeline-year-dot-color: #ffb000;
+
+  --language-border-color: #2a2011;
+  --highlight-bg-color: #120d07;
+  --highlighter-rouge-color: #ffb000;
+  --highlight-lineno-color: #5a4a34;
+  --inline-code-bg: rgba(255, 176, 0, 0.1);
+  --code-color: #ede0c4;
+  --code-header-text-color: #7a6544;
+  --code-header-muted-color: #2a2011;
+  --code-header-icon-color: #5a4a34;
+  --clipboard-checked-color: #7bbf16;
+  --filepath-text-color: #f3e3bf;
 }
 
-:root[data-mode='light'] {
+@mixin amber-light {
+  --amber: #b4620a;
+  --amber-hover: #92400e;
+  --amber-dim: rgba(180, 98, 10, 0.08);
+  --amber-border: rgba(180, 98, 10, 0.25);
+
+  --main-bg: #faf5ea;
+  --body-bg: #f4ecdc;
+  --main-border-color: #e7dcc4;
+  --text-color: #3a2f1c;
+  --text-muted-color: #8a7350;
+  --text-muted-highlight-color: #4a3c22;
+  --heading-color: #2c2311;
+  --blockquote-border-color: rgba(180, 98, 10, 0.4);
+  --link-color: #b4620a;
+  --link-underline-color: rgba(180, 98, 10, 0.3);
+
+  --site-title-color: #b4620a;
+  --site-subtitle-color: #8a7350;
+  --sidebar-bg: #f1e8d5;
+  --sidebar-border-color: #e7dcc4;
+  --sidebar-muted-color: #6f5c3d;
+  --sidebar-active-color: #b4620a;
+  --sidebar-hover-bg: rgba(180, 98, 10, 0.08);
+  --avatar-border-color: rgba(180, 98, 10, 0.35);
+
+  --topbar-bg: rgba(250, 245, 234, 0.72);
+  --toc-highlight: #b4620a;
+  --btn-share-hover-color: #b4620a;
+  --card-bg: #fffaf0;
+  --card-hover-bg: #fff5e4;
+  --tag-border: rgba(180, 98, 10, 0.28);
+  --tag-hover: rgba(180, 98, 10, 0.12);
+  --categories-icon-hover-color: #b4620a;
+  --highlighter-rouge-color: #9a4a08;
+  --inline-code-bg: rgba(180, 98, 10, 0.1);
+}
+
+/* Chirpy 7.6 applies colours via data-bs-theme (its toggle JS resolves "system"
+   to light/dark and sets this attribute). Target the same attribute so the
+   toggle stays in sync. The dark default for new visitors is seeded via the
+   `theme` localStorage key in _includes/metadata-hook.html. */
+:root[data-bs-theme='light'] {
   @include amber-light;
 }
 
-:root[data-mode='dark'] {
+:root[data-bs-theme='dark'] {
   @include amber-dark;
 }
 
-:root:not([data-mode]) {
-  @media (prefers-color-scheme: light) {
-    @include amber-light;
+/* ── Typography ──────────────────────────────────────────────────────────── */
+
+body {
+  font-family: $sans;
+}
+
+/* Terminal-mono for structural chrome: title, nav, meta, tags, toc, footer. */
+.site-title,
+.site-subtitle,
+#sidebar .nav .nav-link,
+.post-meta,
+.post-tag,
+.post-tags .tag,
+#tags .tag,
+.tag-content,
+#access-lastmod,
+.post-content time,
+#toc-wrapper,
+.timeline,
+#breadcrumb,
+.footer,
+.date {
+  font-family: $mono;
+}
+
+/* Post + page headings in mono for the terminal-section feel. */
+h1,
+h2,
+h3,
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4 {
+  font-family: $mono;
+  letter-spacing: -0.01em;
+}
+
+code,
+pre,
+kbd,
+.highlight {
+  font-family: $mono;
+}
+
+/* ── Site title: mono, amber, phosphor glow, blinking cursor ─────────────── */
+
+.site-title a {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+:root[data-bs-theme='dark'] .site-title a {
+  text-shadow: 0 0 8px rgba(255, 176, 0, 0.25);
+}
+
+.site-title a::after {
+  content: '_';
+  margin-left: 0.1em;
+  color: var(--amber, #ffb000);
+  animation: amber-cursor 1.15s step-start infinite;
+}
+
+@keyframes amber-cursor {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ── Sidebar nav: ▸ prompt marker, amber active pill ─────────────────────── */
+
+#sidebar .nav .nav-link {
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+}
+
+#sidebar .nav .nav-item.active .nav-link {
+  background: var(--sidebar-hover-bg);
+  border-radius: 5px;
+}
+
+/* ── Tags as bordered mono chips (matches resume skill chips) ────────────── */
+
+.post-tag,
+#tags .tag,
+.tag-content .post-tag {
+  border: 1px solid var(--tag-border);
+  border-radius: 4px;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  background: transparent;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.post-tag:hover,
+#tags .tag:hover {
+  background: var(--tag-hover);
+  border-color: var(--amber-border, rgba(255, 176, 0, 0.4));
+  color: var(--link-color) !important;
+}
+
+/* ── Post preview cards: amber border-glow on hover ──────────────────────── */
+
+.card {
+  transition: border-color 0.15s ease, box-shadow 0.2s ease,
+    background-color 0.15s ease;
+}
+
+:root[data-bs-theme='dark'] .card:hover {
+  box-shadow: 0 0 0 1px var(--amber-border, rgba(255, 176, 0, 0.25)),
+    0 0 18px rgba(255, 176, 0, 0.1);
+}
+
+/* ── Amber list markers + amber blockquote bar in post content ───────────── */
+
+.post-content ul > li::marker {
+  color: var(--amber, #ffb000);
+}
+
+.post-content blockquote {
+  border-inline-start-color: var(--blockquote-border-color);
+}
+
+/* Amber phosphor glow on post title (dark only). */
+:root[data-bs-theme='dark'] .post h1 {
+  color: #f3e3bf;
+}
+
+/* ── CRT phosphor overlay: scanlines + vignette + warm corner cast ───────── */
+
+@mixin crt-overlay {
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.16) 0px,
+      rgba(0, 0, 0, 0.16) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    opacity: 0.3;
   }
 
-  @media (prefers-color-scheme: dark) {
-    @include amber-dark;
+  &::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9997;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at 50% 50%, transparent 60%, rgba(0, 0, 0, 0.5) 100%),
+      radial-gradient(ellipse at 0% 100%, rgba(255, 176, 0, 0.04) 0%, transparent 35%);
+  }
+}
+
+:root[data-bs-theme='dark'] body {
+  @include crt-overlay;
+}
+
+@media (max-width: 640px) {
+  :root[data-bs-theme='dark'] body::before {
+    opacity: 0.18;
   }
 }

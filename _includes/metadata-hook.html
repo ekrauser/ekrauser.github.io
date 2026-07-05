@@ -1,0 +1,18 @@
+<!-- Web fonts for the amber-phosphor theme: Inter (body) + JetBrains Mono (terminal) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Default new visitors to the dark phosphor theme, using Chirpy's own `theme`
+     localStorage key so the sidebar toggle (System/Light/Dark) stays in sync.
+     Runs synchronously in <head> to set the attribute before first paint. -->
+<script>
+  (function () {
+    try {
+      if (!localStorage.getItem('theme')) {
+        localStorage.setItem('theme', 'dark');
+        document.documentElement.setAttribute('data-bs-theme', 'dark');
+      }
+    } catch (e) {}
+  })();
+</script>
