@@ -951,9 +951,18 @@ html.booting::before {
   box-shadow: none;
 }
 
-/* Per-post share cards are the og:image + homepage thumbnails. Hide the
-   redundant hero banner + caption on the post page itself (the H1 already
-   shows the title). Homepage thumbnails live in .post-preview and are kept. */
+/* The per-post terminal cards are used only as the share image (og:image);
+   hide them everywhere on-site. The og:image meta tag is unaffected.
+   1) the hero banner + caption on the post page (H1 already shows the title) */
 .mt-3.mb-3:has(> .preview-img) {
   display: none;
+}
+/* 2) the thumbnail column on the homepage card list (added nothing and broke
+   the mobile card layout); let the body span the full card width. */
+.post-preview .col-md-5 {
+  display: none;
+}
+.post-preview .col-md-7 {
+  flex: 0 0 100%;
+  max-width: 100%;
 }
