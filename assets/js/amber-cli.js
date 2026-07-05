@@ -143,7 +143,8 @@
           '  <span class="c-amber">cd</span> &lt;page&gt;            home &middot; about &middot; archives &middot; tags &middot; categories\n' +
           '  <span class="c-amber">search</span> &lt;term&gt;        search post titles + text\n' +
           '  <span class="c-amber">theme</span> &lt;dark|light|system&gt;\n' +
-          '  <span class="c-amber">whoami</span> &middot; <span class="c-amber">neofetch</span> &middot; <span class="c-amber">clear</span> &middot; <span class="c-amber">exit</span>'
+          '  <span class="c-amber">whoami</span> &middot; <span class="c-amber">neofetch</span> &middot; <span class="c-amber">clear</span> &middot; <span class="c-amber">exit</span>\n' +
+          '<span class="c-muted">  Tab completes &middot; ↑↓ history</span>'
         );
         break;
       case 'ls':
@@ -221,8 +222,21 @@
       case 'clear':
         cli.out.innerHTML = '';
         break;
+      case 'date':
+        print('<span class="c-muted">' + esc(new Date().toString()) + '</span>');
+        break;
+      case 'echo':
+        print(esc(arg));
+        break;
+      case 'pwd':
+        print('/home/ekrauser');
+        break;
+      case 'uname':
+        print('<span class="c-muted">Linux lab.krauser.tech amber-phosphor #1 SMP x86_64 GNU/Linux</span>');
+        break;
       case 'sudo':
-        print('<span class="c-muted">nice try. this incident will be reported.</span>');
+        if (/make me a sandwich/i.test(arg)) print('<span class="c-amber">Okay.</span> <span class="c-muted">https://xkcd.com/149/</span>');
+        else print('<span class="c-muted">nice try. this incident will be reported.</span>');
         break;
       case 'exit':
       case 'q':
@@ -252,8 +266,26 @@
     print(keys.map(function (k) { return '<span class="c-amber">' + esc(k) + '</span> <span class="c-muted">(' + set[k] + ')</span>'; }).join('  '));
   }
 
+  var COMMANDS = ['help', 'ls', 'open', 'cat', 'cd', 'search', 'theme', 'whoami',
+    'neofetch', 'clear', 'date', 'echo', 'pwd', 'uname', 'exit'];
+  function autocomplete() {
+    var parts = cli.input.value.split(/\s+/);
+    if (parts.length <= 1) {
+      var c = COMMANDS.filter(function (x) { return x.indexOf(parts[0].toLowerCase()) === 0; });
+      if (c.length === 1) cli.input.value = c[0] + ' ';
+      else if (c.length > 1) print('<span class="c-muted">' + c.join('  ') + '</span>');
+    } else if (['open', 'cat', 'cd'].indexOf(parts[0].toLowerCase()) !== -1) {
+      var pre = parts.slice(1).join(' ').toLowerCase();
+      var c2 = posts().map(function (p) { return slugOf(p.url); })
+        .filter(function (s) { return s.toLowerCase().indexOf(pre) === 0; });
+      if (c2.length === 1) cli.input.value = parts[0] + ' ' + c2[0];
+      else if (c2.length > 1) print('<span class="c-muted">' + c2.join('  ') + '</span>');
+    }
+  }
+
   function onKey(e) {
     if (e.key === 'Enter') { var v = cli.input.value; cli.input.value = ''; run(v); }
+    else if (e.key === 'Tab') { e.preventDefault(); autocomplete(); }
     else if (e.key === 'Escape') { close(); }
     else if (e.key === 'ArrowUp') {
       e.preventDefault();

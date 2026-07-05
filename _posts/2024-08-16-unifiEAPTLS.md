@@ -4,6 +4,9 @@ date: 2024-08-16 23:00:00 -500
 categories: [homelab, infrastructure, unifi]
 tags: [homelab, wifi, unifi, infrastructure]     # TAG names should always be lowercase
 description: Wiring up WPA2-Enterprise with on-prem AD CS certificates, NPS RADIUS, and UniFi APs — certificate templates, RADIUS clients via PowerShell, and the wall I hit at the end.
+image:
+  path: /assets/img/cards/unifiEAPTLS.png
+  alt: "EAP-TLS with On-Prem AD and Unifi APs"
 ---
 
 Full disclosure, this isn't going to be a tutorial. This relies on a lot of preexisting infrastructure that I will not be diving into here. This assumes you already have a fully configured and deployed environment consisting of at least:

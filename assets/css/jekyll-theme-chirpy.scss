@@ -950,3 +950,10 @@ html.booting::before {
   padding: 0 0.3rem;
   box-shadow: none;
 }
+
+/* Per-post share cards are the og:image + homepage thumbnails. Hide the
+   redundant hero banner + caption on the post page itself (the H1 already
+   shows the title). Homepage thumbnails live in .post-preview and are kept. */
+.mt-3.mb-3:has(> .preview-img) {
+  display: none;
+}
