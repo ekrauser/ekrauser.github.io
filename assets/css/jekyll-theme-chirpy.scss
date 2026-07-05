@@ -1,19 +1,30 @@
 ---
-# Custom stylesheet entrypoint. This file overrides the theme's compiled CSS,
-# so it must @use "main" to pull in the full Chirpy base before adding overrides.
 ---
 
-@use "main";
+/* Replicates Chirpy 7.x's own stylesheet entry (must match the gem so the full
+   theme CSS is emitted), then appends the amber overrides below.
+   In production the theme uses `main.bundle`; in development, `main`. */
 
-// ---------------------------------------------------------------------------
-// Amber / terminal accent
-// Re-tints Chirpy's default blue accent to amber across links, active nav,
-// the TOC, tags, inline code, and the site title, in both colour schemes.
-// Scoping mirrors Chirpy's own theme application:
-//   :root[data-mode='light|dark']  -> explicit toggle
-//   :root:not([data-mode])         -> follow the OS via prefers-color-scheme
-// Palette: light #b45309 (accent) / #9a3412 (inline code); dark #f59e0b / #fbbf24.
-// ---------------------------------------------------------------------------
+@use 'abstracts/variables' with (
+  $theme: '{{ site.theme_mode }}'
+);
+
+/* prettier-ignore */
+@use 'main
+{%- if jekyll.environment == 'production' -%}
+  .bundle
+{%- endif -%}
+';
+
+/* ---------------------------------------------------------------------------
+   Amber / terminal accent
+   Re-tints Chirpy's default blue accent to amber across links, active nav,
+   the TOC, tags, inline code, and the site title, in both colour schemes.
+   Scoping mirrors Chirpy's own theme application:
+     :root[data-mode='light|dark']  -> explicit toggle
+     :root:not([data-mode])         -> follow the OS via prefers-color-scheme
+   Palette: light #b45309 (accent) / #9a3412 (inline code); dark #f59e0b / #fbbf24.
+   --------------------------------------------------------------------------- */
 
 @mixin amber-light {
   --link-color: #b45309;
