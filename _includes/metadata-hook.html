@@ -16,3 +16,14 @@
     } catch (e) {}
   })();
 </script>
+
+<!-- Build-time stats for the terminal flourishes (statusline, hero). -->
+<script>
+  window.__LAB__ = {
+    posts: {{ site.posts | size }},
+    tags: {{ site.tags | size }},
+    categories: {{ site.categories | size }},
+    built: "{{ site.time | date: '%Y-%m-%d' }}"
+  };
+</script>
+<script defer src="{{ '/assets/js/amber-terminal.js' | relative_url }}"></script>

@@ -1,0 +1,25 @@
+---
+layout: page
+title: "404 — command not found"
+permalink: /404.html
+---
+
+<div class="term-404">
+<p><span class="u">eric@lab</span>:<span class="d">~</span>$ cd <span class="req">.</span></p>
+<p class="err">bash: cd: <span class="req2">.</span>: No such file or directory</p>
+<p class="muted"># that path isn't on this box.</p>
+<p>&nbsp;</p>
+<p><span class="u">eric@lab</span>:<span class="d">~</span>$ ls ~/</p>
+<p><a href="{{ '/' | relative_url }}">home/</a>&nbsp;&nbsp;<a href="{{ '/archives/' | relative_url }}">archives/</a>&nbsp;&nbsp;<a href="{{ '/categories/' | relative_url }}">categories/</a>&nbsp;&nbsp;<a href="{{ '/tags/' | relative_url }}">tags/</a>&nbsp;&nbsp;<a href="{{ '/about/' | relative_url }}">about/</a></p>
+<p>&nbsp;</p>
+<p><span class="u">eric@lab</span>:<span class="d">~</span>$ <span class="cur">&#9608;</span></p>
+</div>
+
+<script>
+  (function () {
+    var path = location.pathname;
+    document.querySelectorAll('.term-404 .req, .term-404 .req2').forEach(function (e) {
+      e.textContent = path;
+    });
+  })();
+</script>

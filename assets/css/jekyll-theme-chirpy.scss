@@ -208,10 +208,7 @@ body {
 h1,
 h2,
 h3,
-.post-content h1,
-.post-content h2,
-.post-content h3,
-.post-content h4 {
+.content h4 {
   font-family: $mono;
   letter-spacing: -0.01em;
 }
@@ -298,11 +295,11 @@ kbd,
 
 /* ── Amber list markers + amber blockquote bar in post content ───────────── */
 
-.post-content ul > li::marker {
+.content ul > li::marker {
   color: var(--amber, #ffb000);
 }
 
-.post-content blockquote {
+.content blockquote {
   border-inline-start-color: var(--blockquote-border-color);
 }
 
@@ -350,4 +347,218 @@ kbd,
   :root[data-bs-theme='dark'] body::before {
     opacity: 0.18;
   }
+}
+
+/* ===========================================================================
+   Terminal flourishes (injected by assets/js/amber-terminal.js)
+   =========================================================================== */
+
+/* ── passwd-style identity line under the sidebar subtitle ───────────────── */
+.uid-line {
+  font-family: $mono;
+  font-size: 0.58rem;
+  line-height: 1.6;
+  color: var(--text-muted-color);
+  margin: 1.1rem 0.25rem 0;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--main-border-color);
+  letter-spacing: 0.01em;
+  word-break: break-word;
+}
+.uid-line b {
+  color: var(--link-color);
+  font-weight: 500;
+}
+
+/* ── hex-addressed section headers (▸ TITLE ──── [ 0xNN ]) ────────────────── */
+.content h2.sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  color: var(--link-color);
+  border-bottom: 1px solid var(--main-border-color);
+  padding-bottom: 0.3rem;
+}
+.content h2.sec-head::before {
+  content: '\25B8'; /* ▸ */
+  flex: none;
+  color: var(--link-color);
+  font-size: 0.8em;
+}
+.content h2.sec-head .sec-addr {
+  margin-left: auto;
+  flex: none;
+  align-self: center;
+  font-family: $mono;
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--text-muted-color);
+}
+/* keep Chirpy's hover anchor out of the flex row */
+.content h2.sec-head > .anchor {
+  position: absolute;
+  margin-left: -1.2em;
+}
+
+/* ── amber scroll-progress bar (posts) ───────────────────────────────────── */
+.scroll-progress {
+  position: fixed;
+  inset: 0 auto auto 0;
+  height: 2px;
+  width: 0;
+  z-index: 9999;
+  background: linear-gradient(90deg, var(--amber, #ffb000), var(--amber-hover, #ffc74d));
+  box-shadow: 0 0 8px rgba(255, 176, 0, 0.5);
+  transition: width 0.05s linear;
+}
+
+/* ── vim/tmux-style statusline above the footer ──────────────────────────── */
+.statusline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  font-family: $mono;
+  font-size: 0.62rem;
+  letter-spacing: 0.03em;
+  margin: 1.6rem 0 0.4rem;
+  border-top: 1px solid var(--main-border-color);
+  padding-top: 0.7rem;
+}
+.statusline .sl {
+  display: flex;
+  align-items: center;
+  padding: 0.2rem 0.75rem;
+  color: var(--text-muted-color);
+  border-right: 1px solid var(--main-border-color);
+}
+.statusline .sl:first-child {
+  padding-left: 0.75rem;
+}
+.statusline .sl-host {
+  color: var(--link-color);
+}
+.statusline .sl-sp {
+  flex: 1 1 auto;
+  border-right: none;
+  padding: 0;
+}
+.statusline .sl-a {
+  background: var(--amber, #ffb000);
+  color: #1a1206;
+  font-weight: 700;
+  border-right: none;
+}
+
+/* ── terminal prompt hero on the home list ───────────────────────────────── */
+.home-hero {
+  font-family: $mono;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  margin: 0 0 1.6rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--main-border-color);
+  border-radius: 6px;
+  background: var(--card-bg);
+  letter-spacing: 0.01em;
+}
+.home-hero .hh-u {
+  color: var(--link-color);
+  font-weight: 600;
+}
+.home-hero .hh-p {
+  color: var(--text-muted-highlight-color);
+}
+.home-hero .hh-c {
+  color: var(--text-muted-color);
+}
+.home-hero .hh-cur,
+.term-404 .cur {
+  color: var(--amber, #ffb000);
+  animation: amber-cursor 1.15s step-start infinite;
+}
+
+/* ── avatar phosphor pulse (dark) ────────────────────────────────────────── */
+:root[data-bs-theme='dark'] #avatar {
+  animation: avatar-pulse 4.5s ease-in-out infinite;
+}
+@keyframes avatar-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px var(--amber-border, rgba(255, 176, 0, 0.25)),
+      0 0 14px rgba(255, 176, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 0 1px var(--amber-border, rgba(255, 176, 0, 0.25)),
+      0 0 24px rgba(255, 176, 0, 0.22);
+  }
+}
+
+/* ── neofetch-style system card (About page) ─────────────────────────────── */
+.neofetch {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  font-family: $mono;
+  font-size: 0.78rem;
+  line-height: 1.7;
+  border: 1px solid var(--main-border-color);
+  border-radius: 8px;
+  background: var(--card-bg);
+  padding: 1.2rem 1.5rem;
+  margin: 0.5rem 0 2rem;
+  overflow-x: auto;
+}
+.neofetch .nf-logo {
+  flex: none;
+  margin: 0;
+  white-space: pre;
+  color: var(--amber, #ffb000);
+  font-size: 0.8rem;
+  line-height: 1.1;
+  text-shadow: 0 0 8px rgba(255, 176, 0, 0.25);
+}
+.neofetch .nf-info {
+  min-width: 0;
+}
+.neofetch .nf-title {
+  color: var(--link-color);
+  font-weight: 600;
+}
+.neofetch .nf-rule {
+  color: var(--main-border-color);
+  user-select: none;
+}
+.neofetch .nf-info > div > span:first-child {
+  display: inline-block;
+  width: 5.5rem;
+  color: var(--link-color);
+  font-weight: 500;
+}
+
+/* ── terminal 404 ────────────────────────────────────────────────────────── */
+.term-404 {
+  font-family: $mono;
+  font-size: 0.95rem;
+  line-height: 1.9;
+  max-width: 46rem;
+}
+.term-404 p {
+  margin: 0.1rem 0;
+}
+.term-404 .u {
+  color: var(--link-color);
+  font-weight: 600;
+}
+.term-404 .d {
+  color: var(--text-muted-highlight-color);
+}
+.term-404 .err {
+  color: #e0662c;
+}
+.term-404 .muted {
+  color: var(--text-muted-color);
+}
+.term-404 a {
+  font-weight: 600;
 }
