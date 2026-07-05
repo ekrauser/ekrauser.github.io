@@ -562,3 +562,391 @@ kbd,
 .term-404 a {
   font-weight: 600;
 }
+
+/* ===========================================================================
+   Phosphor code blocks — warm multi-tone recolor of Chirpy's base16 Rouge theme
+   (overrides .highlight .TOKEN rules from _sass/themes/_{dark,light}.scss).
+   =========================================================================== */
+
+:root[data-bs-theme='dark'] {
+  .highlight,
+  .highlight .w {
+    color: #ede0c4;
+    background-color: #120d07;
+  }
+  .highlight .c,
+  .highlight .ch,
+  .highlight .cd,
+  .highlight .cm,
+  .highlight .cpf,
+  .highlight .c1,
+  .highlight .cs {
+    color: #7a6544;
+    font-style: italic;
+  }
+  .highlight .k,
+  .highlight .kn,
+  .highlight .kp,
+  .highlight .kr,
+  .highlight .kv,
+  .highlight .sa,
+  .highlight .nt {
+    color: #ffb000;
+  }
+  .highlight .kc,
+  .highlight .kt,
+  .highlight .kd,
+  .highlight .cp,
+  .highlight .nc,
+  .highlight .nn,
+  .highlight .no {
+    color: #ff8c42;
+  }
+  .highlight .s,
+  .highlight .sb,
+  .highlight .sc,
+  .highlight .dl,
+  .highlight .sd,
+  .highlight .s2,
+  .highlight .sh,
+  .highlight .sx,
+  .highlight .s1 {
+    color: #cc9a3f;
+  }
+  .highlight .sr,
+  .highlight .na {
+    color: #d9a441;
+  }
+  .highlight .si,
+  .highlight .se,
+  .highlight .nf,
+  .highlight .fm,
+  .highlight .nb,
+  .highlight .bp,
+  .highlight .gh,
+  .highlight .gu {
+    color: #ffc74d;
+  }
+  .highlight .m,
+  .highlight .mi,
+  .highlight .mf,
+  .highlight .mh,
+  .highlight .mo,
+  .highlight .mb,
+  .highlight .il {
+    color: #e0a458;
+  }
+  .highlight .nv,
+  .highlight .vc,
+  .highlight .vg,
+  .highlight .vi {
+    color: #e6c07a;
+  }
+  .highlight .o,
+  .highlight .ow,
+  .highlight .p,
+  .highlight .pi {
+    color: #c9b48a;
+  }
+  .highlight .gi {
+    color: #9fae5d;
+    background-color: transparent;
+  }
+  .highlight .gd {
+    color: #d9776a;
+    background-color: transparent;
+  }
+  .highlight .gp {
+    color: #7a6544;
+  }
+  .highlight .err {
+    color: #ede0c4;
+    background-color: transparent;
+  }
+}
+
+:root[data-bs-theme='light'] {
+  .highlight,
+  .highlight .w {
+    color: #3a2f1c;
+    background-color: #f3ecda;
+  }
+  .highlight .c,
+  .highlight .ch,
+  .highlight .cd,
+  .highlight .cm,
+  .highlight .cpf,
+  .highlight .c1,
+  .highlight .cs {
+    color: #9a875f;
+    font-style: italic;
+  }
+  .highlight .k,
+  .highlight .kn,
+  .highlight .kp,
+  .highlight .kr,
+  .highlight .kv,
+  .highlight .sa,
+  .highlight .nt {
+    color: #b4620a;
+  }
+  .highlight .kc,
+  .highlight .kt,
+  .highlight .kd,
+  .highlight .cp,
+  .highlight .nc,
+  .highlight .nn,
+  .highlight .no {
+    color: #9a4a08;
+  }
+  .highlight .s,
+  .highlight .sb,
+  .highlight .sc,
+  .highlight .dl,
+  .highlight .sd,
+  .highlight .s2,
+  .highlight .sh,
+  .highlight .sx,
+  .highlight .s1 {
+    color: #846a1c;
+  }
+  .highlight .sr,
+  .highlight .na {
+    color: #8a5a12;
+  }
+  .highlight .si,
+  .highlight .se,
+  .highlight .nf,
+  .highlight .fm,
+  .highlight .nb,
+  .highlight .bp,
+  .highlight .gh,
+  .highlight .gu {
+    color: #a85a10;
+  }
+  .highlight .m,
+  .highlight .mi,
+  .highlight .mf,
+  .highlight .mh,
+  .highlight .mo,
+  .highlight .mb,
+  .highlight .il {
+    color: #9a6a1e;
+  }
+  .highlight .nv,
+  .highlight .vc,
+  .highlight .vg,
+  .highlight .vi {
+    color: #7a5a2a;
+  }
+  .highlight .o,
+  .highlight .ow,
+  .highlight .p,
+  .highlight .pi {
+    color: #6f5c3d;
+  }
+  .highlight .gi {
+    color: #5a7a2e;
+    background-color: transparent;
+  }
+  .highlight .gd {
+    color: #b04a3a;
+    background-color: transparent;
+  }
+  .highlight .gp {
+    color: #9a875f;
+  }
+  .highlight .err {
+    color: #3a2f1c;
+    background-color: transparent;
+  }
+}
+
+/* ===========================================================================
+   CRT boot screen (once per session) + interactive command line (assets/js/amber-cli.js)
+   =========================================================================== */
+
+/* Cover the viewport immediately (CSS is in <head>) so there's no flash before
+   JS builds the boot screen. */
+html.booting::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: #0d0b07;
+  z-index: 100000;
+}
+
+#boot-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100001;
+  background: #0d0b07;
+  color: #ede0c4;
+  font-family: $mono;
+  font-size: 0.9rem;
+  line-height: 1.75;
+  padding: 8vh 8vw;
+  overflow: hidden;
+  cursor: pointer;
+}
+#boot-screen.done {
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+#boot-screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.18) 0,
+    rgba(0, 0, 0, 0.18) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.4;
+}
+#boot-screen .bl-ok {
+  color: #7bbf16;
+}
+#boot-screen .bl-amber {
+  color: #ffb000;
+}
+#boot-screen .bl-muted {
+  color: #9a8060;
+}
+#boot-screen .bl-cur {
+  color: #ffb000;
+  animation: amber-cursor 1.15s step-start infinite;
+}
+#boot-screen .bl-hint {
+  color: #5a4a34;
+  margin-top: 1.4rem;
+  font-size: 0.72rem;
+}
+
+/* ── command-line overlay ────────────────────────────────────────────────── */
+#cli-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+  background: rgba(6, 5, 3, 0.62);
+  backdrop-filter: blur(2px);
+  padding: 9vh 5vw;
+}
+#cli-overlay.open {
+  display: block;
+}
+#cli-box {
+  max-width: 760px;
+  margin: 0 auto;
+  background: #120d07;
+  border: 1px solid var(--amber-border, rgba(255, 176, 0, 0.25));
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(255, 176, 0, 0.12),
+    0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 176, 0, 0.06);
+  font-family: $mono;
+  font-size: 0.85rem;
+  overflow: hidden;
+}
+#cli-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.8rem;
+  background: #1a1206;
+  border-bottom: 1px solid rgba(255, 176, 0, 0.15);
+  color: #9a8060;
+  font-size: 0.68rem;
+}
+#cli-titlebar .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: none;
+}
+#cli-titlebar .dot-r {
+  background: #ed6a5e;
+}
+#cli-titlebar .dot-y {
+  background: #f5bf4f;
+}
+#cli-titlebar .dot-g {
+  background: #62c554;
+}
+#cli-titlebar .cli-title {
+  margin-left: 0.4rem;
+}
+#cli-out {
+  padding: 0.8rem 1rem;
+  max-height: 55vh;
+  overflow-y: auto;
+  color: #ede0c4;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+#cli-out a {
+  color: var(--amber, #ffb000);
+}
+#cli-out .c-amber {
+  color: #ffb000;
+}
+#cli-out .c-muted {
+  color: #9a8060;
+}
+#cli-out .c-err {
+  color: #e0662c;
+}
+#cli-inputline {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem 0.9rem;
+  border-top: 1px solid rgba(255, 176, 0, 0.1);
+}
+#cli-inputline .prompt {
+  color: var(--amber, #ffb000);
+  font-weight: 600;
+  flex: none;
+}
+#cli-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ede0c4;
+  font-family: $mono;
+  font-size: 0.85rem;
+  caret-color: #ffb000;
+}
+:root[data-bs-theme='light'] #cli-box {
+  background: #fffaf0;
+}
+:root[data-bs-theme='light'] #cli-titlebar {
+  background: #f1e8d5;
+  color: #8a7350;
+  border-bottom-color: rgba(180, 98, 10, 0.2);
+}
+:root[data-bs-theme='light'] #cli-out,
+:root[data-bs-theme='light'] #cli-input {
+  color: #3a2f1c;
+}
+:root[data-bs-theme='light'] #cli-out .c-muted {
+  color: #8a7350;
+}
+
+/* "press / for cli" hint in the statusline */
+.statusline .sl-hint kbd {
+  font-family: $mono;
+  color: var(--link-color);
+  background: transparent;
+  border: 1px solid var(--main-border-color);
+  border-radius: 3px;
+  padding: 0 0.3rem;
+  box-shadow: none;
+}

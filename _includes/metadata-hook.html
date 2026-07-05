@@ -13,6 +13,10 @@
         localStorage.setItem('theme', 'dark');
         document.documentElement.setAttribute('data-bs-theme', 'dark');
       }
+      /* Boot sequence plays once per browsing session; flag it before first paint. */
+      if (!sessionStorage.getItem('booted')) {
+        document.documentElement.classList.add('booting');
+      }
     } catch (e) {}
   })();
 </script>
@@ -23,7 +27,9 @@
     posts: {{ site.posts | size }},
     tags: {{ site.tags | size }},
     categories: {{ site.categories | size }},
-    built: "{{ site.time | date: '%Y-%m-%d' }}"
+    built: "{{ site.time | date: '%Y-%m-%d' }}",
+    search: "{{ '/assets/js/data/search.json' | relative_url }}"
   };
 </script>
 <script defer src="{{ '/assets/js/amber-terminal.js' | relative_url }}"></script>
+<script defer src="{{ '/assets/js/amber-cli.js' | relative_url }}"></script>
