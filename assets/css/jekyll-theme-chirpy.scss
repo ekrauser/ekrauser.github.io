@@ -12,6 +12,7 @@
 // Scoping mirrors Chirpy's own theme application:
 //   :root[data-mode='light|dark']  -> explicit toggle
 //   :root:not([data-mode])         -> follow the OS via prefers-color-scheme
+// Palette: light #b45309 (accent) / #9a3412 (inline code); dark #f59e0b / #fbbf24.
 // ---------------------------------------------------------------------------
 
 @mixin amber-light {
